@@ -300,13 +300,13 @@ public class DocumentationWriter {
 		).findFirst();
 	}
 
-	private Operation _getOperation(
-		String operationName, Optional<Form> formOptional, Method method) {
+	private Operation _getOperation(Optional<Form> formOptional, Method method,
+		String path, String name) {
 
 		return formOptional.map(
-			form -> new Operation(form, method, operationName)
+			form -> new Operation(form, method, path, name, false)
 		).orElse(
-			new Operation(method, operationName)
+			new Operation(method, path, name, false)
 		);
 	}
 
@@ -392,26 +392,19 @@ public class DocumentationWriter {
 			itemRoutesMap.getOrDefault(name, null)
 		).ifPresent(
 			itemRoutes -> {
-				String getOperationName = name + "/retrieve";
-
-				Operation getOperation = new Operation(
-					GET, getOperationName, false);
+				Operation getOperation = new Operation(GET, name, "/retrieve", false);
 
 				_writeOperation(
 					getOperation, resourceJsonObjectBuilder, name, type);
 
-				String updateOperationName = name + "/update";
-
 				Operation updateOperation = _getOperation(
-					updateOperationName, itemRoutes.getFormOptional(), PUT);
+					itemRoutes.getFormOptional(), PUT, name, "/update");
 
 				_writeOperation(
 					updateOperation, resourceJsonObjectBuilder, name, type);
 
-				String deleteOperationName = name + "/delete";
-
 				Operation deleteOperation = new Operation(
-					DELETE, deleteOperationName);
+					DELETE, name, "/delete", false);
 
 				_writeOperation(
 					deleteOperation, resourceJsonObjectBuilder, name, type);
@@ -447,13 +440,11 @@ public class DocumentationWriter {
 		).ifPresent(
 			collectionRoutes -> {
 				_writeOperation(
-					new Operation(GET, resource, true),
-					resourceJsonObjectBuilder, resource, type);
-
-				String operationName = resource + "/create";
+					new Operation(GET, resource, "/create", true), resourceJsonObjectBuilder,
+					resource, type);
 
 				Operation createOperation = _getOperation(
-					operationName, collectionRoutes.getFormOptional(), POST);
+					collectionRoutes.getFormOptional(), POST, resource, "/create");
 
 				_writeOperation(
 					createOperation, resourceJsonObjectBuilder, resource, type);

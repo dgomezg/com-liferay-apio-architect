@@ -28,11 +28,13 @@ import com.liferay.apio.architect.routes.ItemRoutes;
 import com.liferay.apio.architect.routes.NestedCollectionRoutes;
 import com.liferay.apio.architect.test.util.model.RootModel;
 import com.liferay.apio.architect.test.util.representor.MockRepresentorCreator;
+import com.liferay.apio.architect.uri.Path;
 import com.liferay.apio.architect.writer.DocumentationWriter;
 
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 
 import javax.ws.rs.core.HttpHeaders;
 
@@ -62,16 +64,16 @@ public class MockDocumentationWriter {
 
 		CollectionRoutes.Builder<String, Object> collectionBuilder =
 			new CollectionRoutes.Builder<>(
-				"name", null,
+				"name", null, null,
 				__ -> {
 				},
 				__ -> null);
 
 		ItemRoutes.Builder itemBuilder = new ItemRoutes.Builder<>(
 			"name", null,
-			__ -> {
-			},
-			null);
+			__ -> null,
+			null,
+			__ -> null);
 
 		NestedCollectionRoutes.Builder nestedBuilder =
 			new NestedCollectionRoutes.Builder(

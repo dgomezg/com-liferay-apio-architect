@@ -76,10 +76,10 @@ public class ItemRouterManagerImpl
 
 				Set<String> neededProviders = new TreeSet<>();
 
-				Builder builder = new Builder<>(
-					name, curry(_providerManager::provideMandatory),
-					neededProviders::add,
-					_pathIdentifierMapperManager::mapToIdentifierOrFail);
+				Builder<Object, Object> builder = new Builder<>(
+					name, _nameManager::getNameOptional,
+					curry(_providerManager::provideMandatory),
+					neededProviders::add, _pathIdentifierMapperManager::mapToIdentifierOrFail);
 
 				@SuppressWarnings("unchecked")
 				ItemRoutes itemRoutes = itemRouter.itemRoutes(builder);

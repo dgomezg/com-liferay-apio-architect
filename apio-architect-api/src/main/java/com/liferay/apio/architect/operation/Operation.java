@@ -25,26 +25,31 @@ import java.util.Optional;
  */
 public class Operation {
 
-	public Operation(Form form, Method method, String name) {
-		this(form, method, name, false);
+	public Operation(Method method, String name) {
+		this(null, method, name, name, false);
 	}
 
 	public Operation(
-		Form form, Method method, String name, boolean collection) {
+		Method method, String path, String name, boolean collection) {
+		this(null, method, path, name, collection);
+	}
 
+	public Operation(
+		Form form, Method method, String path, String name,
+		boolean collection) {
+		this(form, method, path, name, collection, false);
+	}
+
+	public Operation(
+		Form form, Method method, String path, String name,
+		boolean collection, boolean custom) {
 		_form = form;
 
 		this.method = method;
+		this.path = path;
 		this.name = name;
 		this.collection = collection;
-	}
-
-	public Operation(Method method, String name) {
-		this(null, method, name, false);
-	}
-
-	public Operation(Method method, String name, boolean collection) {
-		this(null, method, name, collection);
+		this.custom = custom;
 	}
 
 	/**
@@ -59,6 +64,8 @@ public class Operation {
 	}
 
 	public final boolean collection;
+	public final boolean custom;
+	public final String path;
 
 	/**
 	 * The operation's method.

@@ -22,10 +22,12 @@ import com.liferay.apio.architect.documentation.APIDescription;
 import com.liferay.apio.architect.documentation.APITitle;
 import com.liferay.apio.architect.documentation.Documentation;
 import com.liferay.apio.architect.endpoint.BinaryEndpoint;
+import com.liferay.apio.architect.endpoint.CustomOperationsEndpoint;
 import com.liferay.apio.architect.endpoint.FormEndpoint;
 import com.liferay.apio.architect.endpoint.RootEndpoint;
 import com.liferay.apio.architect.functional.Try;
 import com.liferay.apio.architect.routes.ItemRoutes;
+import com.liferay.apio.architect.routes.NestedCollectionRoutes;
 import com.liferay.apio.architect.single.model.SingleModel;
 import com.liferay.apio.architect.uri.Path;
 import com.liferay.apio.architect.url.ServerURL;
@@ -74,6 +76,19 @@ public class RootEndpointImpl implements RootEndpoint {
 		return new BinaryEndpoint(
 			_representableManager::getRepresentorOptional,
 			this::_getSingleModelTry);
+	}
+
+	@Override
+	public CustomOperationsEndpoint customOperationsEndpoint(String name) {
+		return new CustomOperationsEndpoint<>(
+			name, _httpServletRequest,
+			_identifierClassManager::getIdentifierClassOptional,
+			id -> _getSingleModelTry(name, id),
+			() -> _collectionRouterManager.getCollectionRoutesOptional(name),
+			() -> _representableManager.getRepresentorOptional(name),
+			() -> _itemRouterManager.getItemRoutesOptional(name),
+			nestedName -> _nestedCollectionRouterManager.getNestedCollectionRoutesOptional(name, nestedName),
+			_pathIdentifierMapperManager::mapToIdentifierOrFail);
 	}
 
 	@Override

@@ -101,9 +101,9 @@ public class CollectionRouterManagerImpl
 				Set<String> neededProviders = new TreeSet<>();
 
 				Builder builder = new Builder<>(
-					name, curry(_providerManager::provideMandatory),
-					neededProviders::add,
-					_pathIdentifierMapperManager::mapToIdentifierOrFail);
+					name, _nameManager::getNameOptional,
+					curry(_providerManager::provideMandatory),
+					neededProviders::add, _pathIdentifierMapperManager::mapToIdentifierOrFail);
 
 				@SuppressWarnings("unchecked")
 				CollectionRoutes collectionRoutes =

@@ -548,7 +548,7 @@ public class NestedCollectionRoutes<T, S, U> {
 				)
 			).map(
 				form -> new Operation(
-					form, POST, join("/", _name, _nestedName, "create"))
+					form, POST, join("/", _name, String.valueOf(identifier), _nestedName), "create", true)
 			).map(
 				Collections::singletonList
 			).orElseGet(
